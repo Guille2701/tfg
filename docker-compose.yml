@@ -1,0 +1,108 @@
+services:
+  # ─── Base de datos MySQL ───
+  db:
+    image: mysql:8.0
+    container_name: alauxa-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./biblioteca.sql:/docker-entrypoint-initdb.d/01-schema.sql
+      - ./libros.sql:/docker-entrypoint-initdb.d/02-data.sql
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  # ─── phpMyAdmin ───
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: alauxa-phpmyadmin
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: db
+      PMA_USER: ${PMA_USER}
+      PMA_PASSWORD: ${PMA_PASSWORD}
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # ─── Backend Flask ───
+  backend:
+    build: ./backend-python
+    container_name: alauxa-backend
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY}
+      FLASK_ENV: ${FLASK_ENV}
+      FLASK_DEBUG: ${FLASK_DEBUG}
+      OLLAMA_URL: ${OLLAMA_URL}
+      OLLAMA_MODEL: ${OLLAMA_MODEL}
+      ADMIN_USERNAME: ${ADMIN_USERNAME}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD}
+      ADMIN_EMAIL: ${ADMIN_EMAIL}
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - backend_uploads:/app/static/uploads
+
+  # ─── Frontend React (nginx) ───
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: ${VITE_API_URL}
+    container_name: alauxa-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+  # ─── Ollama (IA) ───
+  ollama:
+    image: ollama/ollama:latest
+    container_name: alauxa-ollama
+    restart: unless-stopped
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    deploy:
+      resources:
+        reservations:
+          memory: 4G
+
+  # ─── Init: descargar modelo Mistral ───
+  ollama-init:
+    image: curlimages/curl:latest
+    container_name: alauxa-ollama-init
+    depends_on:
+      - ollama
+    restart: "no"
+    entrypoint: >
+      sh -c "
+        echo 'Esperando a que Ollama esté listo...' &&
+        until curl -s http://ollama:11434/api/tags > /dev/null 2>&1; do
+          sleep 2;
+        done &&
+        echo 'Ollama listo. Descargando modelo mistral...' &&
+        curl -s http://ollama:11434/api/pull -d '{\"name\": \"mistral\"}' &&
+        echo 'Modelo mistral descargado correctamente.'
+      "
+
+volumes:
+  db_data:
+  backend_uploads:
+  ollama_data:

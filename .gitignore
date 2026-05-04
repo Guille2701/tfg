@@ -1,0 +1,39 @@
+# Environments
+.env
+.env.*
+!.env.example
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Node / Frontend
+node_modules/
+dist/
+build/
+.npm/
+
+# Python / Backend
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+env.bak/
+venv.bak/
+
+# Docker volumes / Data
+db_data/
+ollama_data/
+backend_uploads/
+# Si no quieres ignorar los archivos SQL de base quita estas líneas
+# *.sql 
+
+# Editor directories and files
+.vscode/
+.idea/
+.DS_Store

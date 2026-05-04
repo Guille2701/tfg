@@ -1,0 +1,139 @@
+@import "tailwindcss";
+
+@theme {
+    --color-primary: #2e7d47;
+    --color-primary-light: #4a9e62;
+    --color-secondary: #3a9fd4;
+    --color-accent: #f5c842;
+
+    --font-family-display: 'Outfit', sans-serif;
+    --radius: 1rem;
+}
+
+/* ── Google Font ─────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+/* ── Base ────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+    font-family: 'Outfit', sans-serif;
+    scroll-behavior: smooth;
+    background-color: #c8e0cf;
+    color: #1a3328;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ── Scrollbar ───────────────────────────────── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #b8d8c0; }
+::-webkit-scrollbar-thumb { background: #5aab6e; border-radius: 99px; }
+
+/* ── Glass Navbar ────────────────────────────── */
+.glass-nav {
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    background-color: rgba(200, 224, 207, 0.88);
+    border-bottom: 1px solid rgba(100, 170, 130, 0.35);
+    box-shadow: 0 1px 20px rgba(46, 125, 71, 0.08);
+}
+
+/* ── Cards ───────────────────────────────────── */
+.card {
+    background: linear-gradient(145deg, #e2f3e8 0%, #d4ecdb 100%);
+    border: 1px solid rgba(100, 170, 130, 0.3);
+    border-radius: 1.25rem;
+    box-shadow: 0 2px 12px rgba(46, 125, 71, 0.08), 0 1px 3px rgba(46, 125, 71, 0.06);
+    transition: box-shadow 0.25s ease, transform 0.25s ease;
+}
+.card:hover {
+    box-shadow: 0 8px 28px rgba(46, 125, 71, 0.14), 0 2px 8px rgba(46, 125, 71, 0.08);
+    transform: translateY(-2px);
+}
+
+/* ── Inputs ──────────────────────────────────── */
+.input-green {
+    background-color: #daf0e2;
+    border: 1.5px solid #90c9a5;
+    border-radius: 0.75rem;
+    padding-block: 0.75rem;
+    padding-right: 1rem;
+    /* padding-left is controlled by Tailwind's pl-* utility (pl-10) */
+    width: 100%;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    color: #1a3328;
+    font-family: 'Outfit', sans-serif;
+}
+.input-green::placeholder { color: #7aaa8a; }
+.input-green:focus {
+    border-color: #2e7d47;
+    box-shadow: 0 0 0 3px rgba(46, 125, 71, 0.15);
+}
+
+/* ── Buttons ─────────────────────────────────── */
+.btn-primary {
+    background: linear-gradient(135deg, #2e7d47 0%, #3d9458 100%);
+    color: white;
+    font-weight: 700;
+    border-radius: 0.875rem;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    cursor: pointer;
+    transition: filter 0.2s, transform 0.15s, box-shadow 0.2s;
+    box-shadow: 0 4px 14px rgba(46, 125, 71, 0.35);
+    font-family: 'Outfit', sans-serif;
+}
+.btn-primary:hover:not(:disabled) {
+    filter: brightness(1.08);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(46, 125, 71, 0.4);
+}
+.btn-primary:active:not(:disabled) { transform: translateY(0); }
+.btn-primary:disabled { opacity: 0.55; cursor: not-allowed; }
+
+/* ── Page section wrapper ────────────────────── */
+.page-section {
+    background: linear-gradient(180deg, #c8e0cf 0%, #bdd8c5 100%);
+    min-height: 100vh;
+}
+
+/* ── Badge pill ──────────────────────────────── */
+.badge-green {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.2rem 0.75rem;
+    background: rgba(46, 125, 71, 0.12);
+    color: #1f5c34;
+    border: 1px solid rgba(46, 125, 71, 0.25);
+    border-radius: 99px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+/* ── Section divider ─────────────────────────── */
+.section-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 1rem;
+    background: rgba(46, 125, 71, 0.1);
+    border: 1px solid rgba(46, 125, 71, 0.2);
+    border-radius: 99px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #2e7d47;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 1.5rem;
+}
+
+/* ── Animate-in ──────────────────────────────── */
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-up { animation: fadeUp 0.45s ease both; }
