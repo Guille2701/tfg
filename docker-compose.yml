@@ -14,10 +14,10 @@ services:
       - ./biblioteca.sql:/docker-entrypoint-initdb.d/01-schema.sql
       - ./libros.sql:/docker-entrypoint-initdb.d/02-data.sql
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot" ]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${MYSQL_ROOT_PASSWORD}"]
       interval: 10s
       timeout: 5s
-      retries: 10
+      retries: 20
 
   # ─── phpMyAdmin ───
   phpmyadmin:
