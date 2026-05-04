@@ -167,6 +167,20 @@ const Recommendations = () => {
                         Nuestro sistema de IA analiza tus gustos para sugerirte libros que encajen contigo.
                     </p>
 
+                    {/* Banner Próximamente */}
+                    <div className="max-w-4xl mx-auto mb-16 bg-accent/10 border-2 border-dashed border-accent/40 rounded-3xl p-8 flex flex-col md:flex-row items-center gap-6 text-left">
+                        <div className="w-16 h-16 bg-accent rounded-2xl flex items-center justify-center shrink-0 shadow-lg shadow-accent/20">
+                            <span className="material-icons text-white text-3xl">construction</span>
+                        </div>
+                        <div>
+                            <h3 className="text-xl font-bold text-slate-800 mb-1">¡Próximamente en Alauxa!</h3>
+                            <p className="text-[#3d6e58]">
+                                Estamos terminando de entrenar y configurar nuestro modelo de Inteligencia Artificial para ofrecerte las mejores recomendaciones. 
+                                <span className="font-bold"> Esta funcionalidad estará activa muy pronto.</span>
+                            </p>
+                        </div>
+                    </div>
+
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto mb-12">
                         {/* Option 1: History */}
                         <button

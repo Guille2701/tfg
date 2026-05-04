@@ -114,7 +114,9 @@ def create_app():
     return app
 
 if __name__ == '__main__':
+    import os
     app = create_app()
-    print("🚀 Servidor Flask iniciado en http://localhost:5000")
+    port = int(os.environ.get('PORT', 5000))
+    print(f"🚀 Servidor Flask iniciado en puerto {port}")
     print("📚 API de Biblioteca lista para usar")
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=port, debug=True)

@@ -46,8 +46,6 @@ services:
       JWT_SECRET_KEY: ${JWT_SECRET_KEY}
       FLASK_ENV: ${FLASK_ENV}
       FLASK_DEBUG: ${FLASK_DEBUG}
-      OLLAMA_URL: ${OLLAMA_URL}
-      OLLAMA_MODEL: ${OLLAMA_MODEL}
       ADMIN_USERNAME: ${ADMIN_USERNAME}
       ADMIN_PASSWORD: ${ADMIN_PASSWORD}
       ADMIN_EMAIL: ${ADMIN_EMAIL}
@@ -70,39 +68,8 @@ services:
     depends_on:
       - backend
 
-  # ─── Ollama (IA) ───
-  ollama:
-    image: ollama/ollama:latest
-    container_name: alauxa-ollama
-    restart: unless-stopped
-    ports:
-      - "11434:11434"
-    volumes:
-      - ollama_data:/root/.ollama
-    deploy:
-      resources:
-        reservations:
-          memory: 4G
-
-  # ─── Init: descargar modelo Mistral ───
-  ollama-init:
-    image: curlimages/curl:latest
-    container_name: alauxa-ollama-init
-    depends_on:
-      - ollama
-    restart: "no"
-    entrypoint: >
-      sh -c "
-        echo 'Esperando a que Ollama esté listo...' &&
-        until curl -s http://ollama:11434/api/tags > /dev/null 2>&1; do
-          sleep 2;
-        done &&
-        echo 'Ollama listo. Descargando modelo mistral...' &&
-        curl -s http://ollama:11434/api/pull -d '{\"name\": \"mistral\"}' &&
-        echo 'Modelo mistral descargado correctamente.'
-      "
+  # ─── Init: descargar modelo Mistral ─── (Eliminado)
 
 volumes:
   db_data:
   backend_uploads:
-  ollama_data:
