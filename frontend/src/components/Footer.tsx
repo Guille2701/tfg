@@ -81,11 +81,11 @@ const Footer = () => {
                 <div className="border-t border-white/10 pt-8 text-center text-white/60 space-y-4">
                     <p>Todos los derechos reservados 2026 ©</p>
                     <p className="text-sm">
-                        Esta web ha sido diseñada y producida por dos socios de la
+                        Esta web ha sido diseñada y producida por un socio de la
                         asociación cultural Alauxa
                     </p>
                     <p className="font-bold text-white/90">
-                        Alvaro Bazan Diaz y Guillermo Bazan Diaz
+                        Guillermo Bazán Díaz
                     </p>
                 </div>
             </div>

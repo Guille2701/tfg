@@ -51,8 +51,13 @@ const MyLoans = () => {
             await loansService.returnLoan(loanId);
             setReturnSuccess(loanId);
             setTimeout(() => setReturnSuccess(null), 3000);
-            // Recargar préstamos para actualizar la vista
+            
+            // Recargar préstamos y estado de suspensión para actualizar la vista inmediatamente
             await loadLoans();
+            if (!isAdmin) {
+                const status = await loansService.getLoanStatus();
+                setSuspension(status);
+            }
         } catch (err: any) {
             const errorMessage = err.response?.data?.message || 'Error al devolver el libro';
             setReturnError({ loanId, message: errorMessage });

@@ -181,12 +181,12 @@ def create_loan():
         if user_active_loan:
             return jsonify({'message': 'Ya tienes un préstamo activo de este libro'}), 400
         
-        # Crear el préstamo (14 días de plazo por defecto)
+        # Crear el préstamo (2 minutos para la demo, 14 días en producción)
         loan = Loan(
             user_id=user_id,
             book_id=book_id,
             loan_date=datetime.utcnow(),
-            expected_return_date=datetime.utcnow() + timedelta(minutes=1),
+            expected_return_date=datetime.utcnow() + timedelta(minutes=2),
             is_notified=False
         )
         
@@ -240,7 +240,9 @@ def return_loan(loan_id):
         penalty_days = 0
         if loan.return_date > loan.expected_return_date:
             delta = loan.return_date - loan.expected_return_date
-            penalty_days = delta.days
+            # Para la demo: si hay cualquier retraso, al menos 1 día de penalización
+            # (En producción real usaríamos solo delta.days)
+            penalty_days = max(1, delta.days)
             loan.penalty_days = penalty_days
         
         # Marcar el libro como disponible
