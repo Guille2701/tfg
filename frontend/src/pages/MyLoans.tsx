@@ -145,7 +145,7 @@ const MyLoans = () => {
                             <img
                                 src={imageUrl}
                                 alt={loan.book.nombreLibro}
-                                className="w-full h-full object-cover"
+                                className="w-full h-full object-contain"
                             />
                         ) : (
                             <span className="material-icons text-6xl text-slate-300">auto_stories</span>

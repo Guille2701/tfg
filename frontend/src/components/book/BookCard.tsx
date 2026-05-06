@@ -41,7 +41,7 @@ const BookCard = ({ book }: { book: Book }) => {
     <div className="bg-[#dff0e8] rounded-3xl overflow-hidden border border-[#90c9a5] hover:shadow-xl transition-all h-full flex flex-col">
       <div className="h-64 relative bg-[#c5e0cf]">
         {imageUrl ? (
-          <img src={imageUrl} alt={book.nombreLibro} className="w-full h-full object-cover" />
+          <img src={imageUrl} alt={book.nombreLibro} className="w-full h-full object-contain" />
         ) : (
           <div className="w-full h-full flex items-center justify-center">
             <span className="material-icons text-6xl text-slate-300">auto_stories</span>

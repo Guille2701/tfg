@@ -291,7 +291,7 @@ const Library = () => {
                                         <img
                                             src={book.imageUrl.startsWith('http') ? book.imageUrl : `${API_URL}${book.imageUrl}`}
                                             alt={book.nombreLibro}
-                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                                            className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-700 ease-out"
                                         />
                                     ) : (
                                         <div className="flex flex-col items-center justify-center text-slate-300">

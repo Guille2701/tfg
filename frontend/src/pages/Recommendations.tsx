@@ -15,7 +15,7 @@ const RecommendedBookCard = ({ book }: { book: Book }) => {
         <div className="group bg-[#dff0e8] rounded-3xl overflow-hidden border border-[#90c9a5] hover:shadow-2xl transition-all hover:-translate-y-2">
             <div className="h-56 relative overflow-hidden bg-[#c5e0cf]">
                 {imageUrl ? (
-                    <img src={imageUrl} alt={book.nombreLibro} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    <img src={imageUrl} alt={book.nombreLibro} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />
                 ) : (
                     <div className="w-full h-full bg-linear-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
                         <span className="material-icons text-6xl text-primary/40">auto_stories</span>
@@ -63,7 +63,7 @@ const HistoryEntry = ({ entry }: { entry: SuggestionHistory }) => {
                                 <img
                                     src={book.imageUrl.startsWith('http') ? book.imageUrl : `${API_URL}${book.imageUrl}`}
                                     alt={book.nombreLibro}
-                                    className="w-full h-full object-cover"
+                                    className="w-full h-full object-contain"
                                 />
                             ) : (
                                 <div className="w-full h-full flex items-center justify-center">
