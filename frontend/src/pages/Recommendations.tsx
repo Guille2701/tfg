@@ -91,9 +91,8 @@ const Recommendations = () => {
     const [isLoadingHistory, setIsLoadingHistory] = useState(false);
     const [error, setError] = useState('');
     const [hasGenerated, setHasGenerated] = useState(false);
-    const [availableGenres, setAvailableGenres] = useState<string[]>([]);
-    const [selectedGenre, setSelectedGenre] = useState<string>('');
-    const [activeMode, setActiveMode] = useState<'history' | 'genre' | null>(null);
+
+
 
     useEffect(() => {
         if (!authLoading && !isAuthenticated) {
@@ -104,18 +103,10 @@ const Recommendations = () => {
     useEffect(() => {
         if (isAuthenticated) {
             loadHistory();
-            loadGenres();
         }
     }, [isAuthenticated]);
 
-    const loadGenres = async () => {
-        try {
-            const genres = await booksService.getGenres();
-            setAvailableGenres(genres);
-        } catch {
-            // silent fail
-        }
-    };
+
 
     const loadHistory = async () => {
         setIsLoadingHistory(true);
@@ -213,28 +204,7 @@ const Recommendations = () => {
                         </button>
                     </div>
 
-                    {/* Genre List (Only visible if Genre mode selected) */}
-                    {activeMode === 'genre' && (
-                        <div className="max-w-3xl mx-auto mb-12 p-8 bg-[#dff0e8] rounded-3xl border border-[#90c9a5] shadow-xl animate-in fade-in slide-in-from-top-4 duration-500">
-                            <p className="text-center text-sm font-bold text-[#3d6e58] uppercase tracking-widest mb-6">Elige un género para comenzar</p>
-                            <div className="flex flex-wrap justify-center gap-3">
-                                {availableGenres.map(genre => (
-                                    <button
-                                        key={genre}
-                                        onClick={() => generateRecommendations(genre, true)}
-                                        disabled={isLoading}
-                                        className={`px-5 py-3 rounded-full text-sm font-bold transition-all ${
-                                            selectedGenre === genre 
-                                            ? 'bg-secondary text-white shadow-lg shadow-secondary/30' 
-                                            : 'bg-[#c5e0cf] text-[#2c5040] hover:bg-secondary/10 hover:text-secondary'
-                                        } disabled:opacity-50`}
-                                    >
-                                        {genre}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-                    )}
+
                 </div>
 
                 {/* Error */}
