@@ -199,7 +199,7 @@ const EventsSection = () => {
                 {/* Header */}
                 <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
                     <div className="space-y-2">
-                        <h2 className="text-4xl font-bold">Próximos eventos</h2>
+                        <h2 className="text-4xl font-bold">Eventos</h2>
                         <p className="text-xl text-[#3d6e58]">
                             Actividades en el Centro Cultural Alauxa
                         </p>

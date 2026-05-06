@@ -186,7 +186,7 @@ def create_loan():
             user_id=user_id,
             book_id=book_id,
             loan_date=datetime.utcnow(),
-            expected_return_date=datetime.utcnow() + timedelta(days=14),
+            expected_return_date=datetime.utcnow() + timedelta(minutes=1),
             is_notified=False
         )
         
