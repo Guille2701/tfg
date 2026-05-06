@@ -4,42 +4,10 @@ import { useAuth } from '../contexts/AuthContext';
 import { suggestionsService } from '../services/suggestions';
 
 import { API_URL } from '../services/api';
-import type { Book, SuggestionHistory } from '../types';
+import type { SuggestionHistory } from '../types';
 
-const RecommendedBookCard = ({ book }: { book: Book }) => {
-    const imageUrl = book.imageUrl?.startsWith('http')
-        ? book.imageUrl
-        : (book.imageUrl ? `${API_URL}${book.imageUrl}` : null);
 
-    return (
-        <div className="group bg-[#dff0e8] rounded-3xl overflow-hidden border border-[#90c9a5] hover:shadow-2xl transition-all hover:-translate-y-2">
-            <div className="h-56 relative overflow-hidden bg-[#c5e0cf]">
-                {imageUrl ? (
-                    <img src={imageUrl} alt={book.nombreLibro} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" />
-                ) : (
-                    <div className="w-full h-full bg-linear-to-br from-primary/20 to-secondary/20 flex items-center justify-center">
-                        <span className="material-icons text-6xl text-primary/40">auto_stories</span>
-                    </div>
-                )}
-                {book.genero && (
-                    <div className="absolute top-4 left-4 px-3 py-1 bg-primary text-white text-xs font-bold rounded-full uppercase tracking-wider">
-                        {book.genero}
-                    </div>
-                )}
-                <div className="absolute top-4 right-4 w-10 h-10 bg-accent/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg">
-                    <span className="material-icons text-white text-sm">psychology</span>
-                </div>
-            </div>
-            <div className="p-6">
-                <h3 className="text-lg font-bold line-clamp-2 mb-1 group-hover:text-primary transition-colors">{book.nombreLibro}</h3>
-                <p className="text-[#3d6e58] text-sm mb-3">{book.autor}</p>
-                {book.sinopsis && (
-                    <p className="text-[#2c5040] text-sm line-clamp-3">{book.sinopsis}</p>
-                )}
-            </div>
-        </div>
-    );
-};
+
 
 const HistoryEntry = ({ entry }: { entry: SuggestionHistory }) => {
     const date = new Date(entry.timestamp);
