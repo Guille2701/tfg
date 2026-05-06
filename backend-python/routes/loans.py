@@ -11,14 +11,31 @@ loans_bp = Blueprint('loans', __name__, url_prefix='/api/loans')
 
 
 def get_suspension_info(db, user_id):
-    """Calcula si el usuario está suspendido por retrasos previos.
-    Regla: por cada día de retraso se acumula 1 día de suspensión,
-    contando desde la fecha de devolución tardía más reciente.
-    Devuelve un dict con suspended (bool), suspension_until (datetime|None)
-    y total_penalty_days (int).
-    """
+    """Calcula si el usuario está suspendido por retrasos previos o actuales."""
+    try:
+        user_id = int(user_id)
+    except (ValueError, TypeError):
+        return {'suspended': False, 'suspension_until': None, 'total_penalty_days': 0, 'days_remaining': 0}
+
     now = datetime.utcnow()
-    # Buscar préstamos devueltos con penalización
+    
+    # 1. Bloqueo inmediato si tiene algún libro actualmente vencido (no devuelto)
+    overdue_loan = db.query(Loan).filter(
+        Loan.user_id == user_id,
+        Loan.return_date.is_(None),
+        Loan.expected_return_date < now
+    ).first()
+    
+    if overdue_loan:
+        return {
+            'suspended': True,
+            'suspension_until': overdue_loan.expected_return_date + timedelta(days=1), # Sanción simbólica mientras no devuelva
+            'total_penalty_days': 0,
+            'days_remaining': 1,
+            'reason': 'Tienes libros vencidos pendientes de devolución'
+        }
+
+    # 2. Buscar préstamos ya devueltos con penalización activa
     late_loans = (
         db.query(Loan)
         .filter(
@@ -49,7 +66,7 @@ def get_suspension_info(db, user_id):
 @jwt_required()
 def loan_status():
     """Devuelve el estado de sanción del usuario autenticado"""
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     db = SessionLocal()
     try:
         info = get_suspension_info(db, user_id)
@@ -69,7 +86,7 @@ def loan_status():
 @jwt_required()
 def my_loans():
     """Obtener préstamos del usuario autenticado - migrado de LoanController.php"""
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     
     db = SessionLocal()
     try:
@@ -86,7 +103,7 @@ def my_loans():
 @jwt_required()
 def all_loans():
     """Obtener todos los préstamos (solo administradores)"""
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     
     db = SessionLocal()
     try:
@@ -128,7 +145,7 @@ def all_loans():
 @jwt_required()
 def create_loan():
     """Crear un nuevo préstamo de libro"""
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     data = request.get_json()
     
     if not data or 'book_id' not in data:
@@ -212,7 +229,7 @@ def create_loan():
 @jwt_required()
 def return_loan(loan_id):
     """Devolver un libro prestado"""
-    user_id = get_jwt_identity()
+    user_id = int(get_jwt_identity())
     
     db = SessionLocal()
     try:
