@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { suggestionsService } from '../services/suggestions';
-import { booksService } from '../services/books';
+
 import { API_URL } from '../services/api';
 import type { Book, SuggestionHistory } from '../types';
 
@@ -84,13 +84,8 @@ const Recommendations = () => {
     const { isAuthenticated, isLoading: authLoading } = useAuth();
     const navigate = useNavigate();
 
-    const [recommendations, setRecommendations] = useState<Book[]>([]);
-    const [explanation, setExplanation] = useState('');
     const [history, setHistory] = useState<SuggestionHistory[]>([]);
-    const [isLoading, setIsLoading] = useState(false);
     const [isLoadingHistory, setIsLoadingHistory] = useState(false);
-    const [error, setError] = useState('');
-    const [hasGenerated, setHasGenerated] = useState(false);
 
 
 
@@ -120,26 +115,7 @@ const Recommendations = () => {
         }
     };
 
-    const generateRecommendations = async (genre?: string, skipHistory: boolean = false) => {
-        setIsLoading(true);
-        setError('');
-        setRecommendations([]);
-        setExplanation('');
-        setSelectedGenre(genre || '');
 
-        try {
-            const data = await suggestionsService.getSuggestions(genre, skipHistory);
-            setRecommendations(data.suggestions);
-            setExplanation(data.explanation || '');
-            setHasGenerated(true);
-            // Refresh history
-            loadHistory();
-        } catch (err: any) {
-            setError(err.message || 'Error al generar recomendaciones');
-        } finally {
-            setIsLoading(false);
-        }
-    };
 
     if (authLoading) return null;
 
@@ -207,76 +183,7 @@ const Recommendations = () => {
 
                 </div>
 
-                {/* Error */}
-                {error && (
-                    <div className="mb-8 p-5 bg-red-50 border border-red-200 rounded-2xl flex items-start gap-3">
-                        <span className="material-icons text-red-500 mt-0.5">error_outline</span>
-                        <div>
-                            <p className="font-semibold text-red-700">Error al generar recomendaciones</p>
-                            <p className="text-red-600 text-sm mt-1">{error}</p>
-                        </div>
-                    </div>
-                )}
 
-                {/* Loading Animation */}
-                {isLoading && (
-                    <div className="text-center py-20">
-                        <div className="relative inline-block">
-                            <div className="w-20 h-20 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
-                            <span className="material-icons absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-primary text-2xl">psychology</span>
-                        </div>
-                        <p className="mt-6 text-[#3d6e58] text-lg">La IA está analizando el catálogo...</p>
-                        <p className="text-[#3d6e58] text-sm mt-1">Esto puede tardar unos segundos</p>
-                    </div>
-                )}
-
-                {/* Recommendations Results */}
-                {!isLoading && hasGenerated && recommendations.length > 0 && (
-                    <div className="mb-16">
-                        <div className="flex items-center gap-3 mb-8">
-                            <span className="material-icons text-primary text-3xl">auto_awesome</span>
-                            <h2 className="text-3xl font-bold">Libros recomendados para ti</h2>
-                        </div>
-
-                        {/* Book Cards Grid */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mb-10">
-                            {recommendations.map((book) => (
-                                <RecommendedBookCard key={book.id} book={book} />
-                            ))}
-                        </div>
-
-                        {/* AI Explanation */}
-                        {explanation && (
-                            <div className="bg-linear-to-br from-primary/5 to-secondary/5 border border-primary/20 rounded-3xl p-8">
-                                <div className="flex items-center gap-3 mb-4">
-                                    <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
-                                        <span className="material-icons text-white">smart_toy</span>
-                                    </div>
-                                    <div>
-                                        <h3 className="font-bold text-lg">Análisis de Mistral IA</h3>
-                                        <p className="text-xs text-[#3d6e58]">Explicación personalizada</p>
-                                    </div>
-                                </div>
-                                <div className="prose prose-slate max-w-none text-sm leading-relaxed whitespace-pre-line">
-                                    {explanation}
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                )}
-
-                {/* Empty state after generating */}
-                {!isLoading && hasGenerated && recommendations.length === 0 && !error && (
-                    <div className="text-center py-16 mb-16">
-                        <div className="w-20 h-20 bg-[#c5e0cf] rounded-full flex items-center justify-center mx-auto mb-4">
-                            <span className="material-icons text-4xl text-[#3d6e58]">menu_book</span>
-                        </div>
-                        <h3 className="text-xl font-bold text-[#3d6e58] mb-2">Sin recomendaciones disponibles</h3>
-                        <p className="text-[#3d6e58] max-w-md mx-auto">
-                            Pide prestado algún libro para que la IA pueda analizar tus gustos y generar recomendaciones personalizadas.
-                        </p>
-                    </div>
-                )}
 
                 {/* History Section */}
                 {history.length > 0 && (
@@ -293,8 +200,8 @@ const Recommendations = () => {
                     </div>
                 )}
 
-                {/* Empty history state */}
-                {!isLoadingHistory && history.length === 0 && !hasGenerated && (
+                {!isLoadingHistory && history.length === 0 && (
+
                     <div className="text-center py-16">
                         <div className="w-20 h-20 bg-[#cfe8d8] rounded-full flex items-center justify-center mx-auto mb-4">
                             <span className="material-icons text-4xl text-slate-300">explore</span>
