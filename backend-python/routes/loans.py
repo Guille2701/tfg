@@ -90,7 +90,7 @@ def my_loans():
     
     db = SessionLocal()
     try:
-        loans = db.query(Loan).filter(Loan.user_id == user_id).all()
+        loans = db.query(Loan).filter(Loan.user_id == user_id).order_by(Loan.loan_date.desc()).all()
         data = [serialize_loan(loan) for loan in loans]
         return jsonify(data), 200
         
@@ -117,8 +117,8 @@ def all_loans():
         if 'ROLE_ADMIN' not in user_roles:
             return jsonify({'message': 'Acceso denegado. Solo administradores.'}), 403
         
-        # Obtener todos los préstamos con información del usuario
-        loans = db.query(Loan).all()
+        # Obtener todos los préstamos con información del usuario (ordenados por fecha descendente)
+        loans = db.query(Loan).order_by(Loan.loan_date.desc()).all()
         
         # Serializar con información adicional del usuario
         data = []

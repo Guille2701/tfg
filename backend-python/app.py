@@ -69,9 +69,8 @@ def create_app():
     from tasks import check_expiring_loans
     
     scheduler = BackgroundScheduler()
-    # Ejecuta la revisión todos los días a las 09:00 AM (por ejemplo)
-    # Para probar ahora, se puede poner interval: scheduler.add_job(func=lambda: check_expiring_loans(app), trigger="interval", minutes=60)
-    scheduler.add_job(func=lambda: check_expiring_loans(app), trigger="cron", hour=9, minute=0)
+    # Ejecuta la revisión cada minuto para la demo (en producción sería diario)
+    scheduler.add_job(func=lambda: check_expiring_loans(app), trigger="interval", minutes=1)
     scheduler.start()
 
     

@@ -30,14 +30,30 @@ def check_expiring_loans(app):
                 if not user or not user.email:
                     continue
                 
+                # Determinar si es un recordatorio o una alerta de retraso
+                es_retraso = loan.expected_return_date < now
+                asunto = "¡ALERTA! Préstamo de libro vencido" if es_retraso else "Recordatorio de devolución de libro"
+                
                 msg = Message(
-                    subject="Recordatorio de devolución de libro",
+                    subject=asunto,
                     recipients=[user.email]
                 )
                 
-                msg.body = f"""Hola {user.nombre},
+                if es_retraso:
+                    msg.body = f"""Hola {user.nombre},
 
-Te recordamos que la fecha estimada de devolución para el libro '{book.titulo}' es el {loan.expected_return_date.strftime('%Y-%m-%d')}.
+Te informamos que el plazo para devolver el libro '{book.titulo}' HA VENCIDO el {loan.expected_return_date.strftime('%d/%m/%Y a las %H:%M')}.
+
+Por favor, devuélvelo lo antes posible en el Centro Cultural Alauxa. Tu cuenta ha sido suspendida temporalmente hasta la devolución y cumplimiento de la sanción.
+
+Gracias,
+El equipo de la Biblioteca Alauxa
+"""
+                else:
+                    msg.body = f"""Hola {user.nombre},
+
+Te recordamos que la fecha estimada de devolución para el libro '{book.titulo}' es el {loan.expected_return_date.strftime('%d/%m/%Y')}.
+
 Por favor, asegúrate de devolverlo a tiempo para evitar penalizaciones.
 
 Gracias,
