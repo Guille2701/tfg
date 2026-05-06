@@ -182,20 +182,13 @@ const Recommendations = () => {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto mb-12">
-                        {/* Option 1: History */}
+                        {/* Option 1: History - DESACTIVADO PARA LA DEMO */}
                         <button
-                            onClick={() => {
-                                setActiveMode('history');
-                                generateRecommendations(undefined, false);
-                            }}
-                            disabled={isLoading}
-                            className={`p-8 rounded-3xl border-2 transition-all text-left flex flex-col gap-4 group ${
-                                activeMode === 'history' 
-                                ? 'border-primary bg-primary/5 ring-4 ring-primary/10' 
-                                : 'border-[#90c9a5] bg-[#dff0e8] hover:border-primary/50'
-                            } ${isLoading ? 'opacity-60 cursor-not-allowed' : ''}`}
+                            onClick={() => {}}
+                            disabled={true}
+                            className="p-8 rounded-3xl border-2 border-[#90c9a5] bg-[#dff0e8] opacity-60 cursor-not-allowed text-left flex flex-col gap-4 group"
                         >
-                            <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+                            <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary">
                                 <span className="material-icons">auto_awesome</span>
                             </div>
                             <div>
@@ -204,17 +197,13 @@ const Recommendations = () => {
                             </div>
                         </button>
 
-                        {/* Option 2: Genre */}
+                        {/* Option 2: Genre - DESACTIVADO PARA LA DEMO */}
                         <button
-                            onClick={() => setActiveMode('genre')}
-                            disabled={isLoading}
-                            className={`p-8 rounded-3xl border-2 transition-all text-left flex flex-col gap-4 group ${
-                                activeMode === 'genre' 
-                                ? 'border-secondary bg-secondary/5 ring-4 ring-secondary/10' 
-                                : 'border-[#90c9a5] bg-[#dff0e8] hover:border-secondary/50'
-                            } ${isLoading ? 'opacity-60 cursor-not-allowed' : ''}`}
+                            onClick={() => {}}
+                            disabled={true}
+                            className="p-8 rounded-3xl border-2 border-[#90c9a5] bg-[#dff0e8] opacity-60 cursor-not-allowed text-left flex flex-col gap-4 group"
                         >
-                            <div className="w-12 h-12 rounded-2xl bg-secondary/10 flex items-center justify-center text-secondary group-hover:scale-110 transition-transform">
+                            <div className="w-12 h-12 rounded-2xl bg-secondary/10 flex items-center justify-center text-secondary">
                                 <span className="material-icons">category</span>
                             </div>
                             <div>
