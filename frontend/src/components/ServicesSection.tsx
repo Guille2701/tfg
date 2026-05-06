@@ -18,7 +18,8 @@ const ServicesSection = () => {
             title: 'Exposiciones',
             description: 'Descubre el talento de artistas locales e internacionales en nuestra sala de muestras.',
             linkText: 'Ver catálogo →',
-            link: '/biblioteca',
+            link: '#eventos',
+
         },
         {
             icon: 'auto_stories',
